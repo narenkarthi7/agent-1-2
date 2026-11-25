@@ -11,11 +11,11 @@ Flow: `Browser -> Django view -> LLM router (JSON) -> tool -> LLM summary -> JSO
 
 ## Setup
 1. Install Ollama, run `ollama pull llama3.2`
-2. MySQL: `CREATE DATABASE chatbot_db CHARACTER SET utf8mb4;`
-3. `pip install -r requirements.txt`
-4. Copy `.env.example` to `.env` and fill in values
-5. `python manage.py makemigrations bot` then `python manage.py migrate`
-6. `python manage.py runserver` and open http://127.0.0.1:8000
+2. `pip install -r requirements.txt`
+3. Copy `.env.example` to `.env` and fill in values (defaults to SQLite — no MySQL server needed)
+   - To use MySQL instead, set `DB_ENGINE=mysql` in `.env` and create `CREATE DATABASE chatbot_db CHARACTER SET utf8mb4;`
+4. `python manage.py makemigrations bot` then `python manage.py migrate`
+5. `python manage.py runserver` and open http://127.0.0.1:8000
 
 ## Sample queries
 - What is the weather in Chennai today?
@@ -25,8 +25,9 @@ Flow: `Browser -> Django view -> LLM router (JSON) -> tool -> LLM summary -> JSO
 - What are my skills? / Where did I study? / What projects have I done?
 - What is Django? (web fallback with sources)
 
-## Check saved data in MySQL
+## Check saved data
 ```sql
+-- SQLite (default)
 SELECT role, tool, LEFT(text, 60) AS msg FROM bot_chatmessage ORDER BY id DESC LIMIT 10;
 SELECT d.name, COUNT(c.id) AS chunks FROM bot_document d JOIN bot_chunk c ON c.document_id = d.id GROUP BY d.id;
 ```
