@@ -1,0 +1,6 @@
+Django>=4.2,<5.3
+PyMySQL
+cryptography
+requests
+python-dotenv
+pypdf
